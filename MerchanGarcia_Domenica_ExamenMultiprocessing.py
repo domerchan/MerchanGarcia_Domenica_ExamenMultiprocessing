@@ -30,7 +30,7 @@ def how_many_within_range_parallel(arr, minimum, maximum, res):
 
 if __name__ == '__main__':
     np.random.RandomState(100)
-    arr = np.random.randint(0, 10, size=[4000, 10])
+    arr = np.random.randint(0, 10, size=[4000000, 10])
     ar = arr.tolist()
     #print(arr)
     
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     
     
     
-    numProcesos = 4
+    numProcesos = 8
     filas = np.size(arr,0) // numProcesos
     residuo = np.size(arr,0) % numProcesos
     inicio = 0
