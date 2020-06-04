@@ -21,8 +21,8 @@ def how_many_within_range_sequential(row, minimum, maximum):
     return count
 
 def how_many_within_range_parallel(arr, minimum, maximum, res):
-    count = 0
     for row in arr:
+        count = 0
         for n in row:
             if minimum <= n <= maximum:
                 count += 1
@@ -30,8 +30,9 @@ def how_many_within_range_parallel(arr, minimum, maximum, res):
 
 if __name__ == '__main__':
     np.random.RandomState(100)
-    arr = np.random.randint(0, 10, size=[4000000, 10])
+    arr = np.random.randint(0, 10, size=[4000, 10])
     ar = arr.tolist()
+    #print(arr)
     
     
     inicioSec = time.time()
@@ -40,11 +41,12 @@ if __name__ == '__main__':
         resultsSec.append(how_many_within_range_sequential(row, minimum=4, maximum=8))
     finSec = time.time()
     resultsSec.sort()
+    #print(resultsSec)
     
     
     
     
-    numProcesos = 8
+    numProcesos = 4
     filas = np.size(arr,0) // numProcesos
     residuo = np.size(arr,0) % numProcesos
     inicio = 0
@@ -55,6 +57,8 @@ if __name__ == '__main__':
         procesos = [] 
         for p in range(numProcesos):
             numFilas = filas + 1 if p < residuo else filas
+            #print()
+            #print(arr[inicio:inicio+numFilas])
             proceso = Process(target=how_many_within_range_parallel, \
                               args=(arr[inicio:inicio+numFilas], 4, 8, res))
             proceso.start()
@@ -63,9 +67,10 @@ if __name__ == '__main__':
         for p in procesos:
             p.join()
             p.terminate
+        finPar = time.time()
         resultsPar = copy.deepcopy(res)
-    finPar = time.time()
     resultsPar.sort()
+    #print(resultsPar)
     
     
     print('Results are correct!\n' if functools.reduce(lambda x, y : x and y, map(lambda p, q: p == q,resultsSec,resultsPar), True) else 'Results are incorrect!\n')
