@@ -44,7 +44,7 @@ if __name__ == '__main__':
     
     
     
-    numProcesos = 4
+    numProcesos = 8
     filas = np.size(arr,0) // numProcesos
     residuo = np.size(arr,0) % numProcesos
     inicio = 0
